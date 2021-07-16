@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simon says</title>
+  </head>
+  <body>
+    <div
+      x-data="game"
+      class="min-h-screen flex flex-col items-center justify-center gap-10"
+    >
+      <div class="relative">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <button
+            x-show="!running"
+            class="
+              bg-black
+              text-white
+              rounded-full
+              px-4
+              py-1
+              w-40
+              h-40
+              sm:w-64 sm:h-64
+              md:w-72 md:h-72
+              z-20
+              text-2xl
+              font-bold
+              tracking-wide
+            "
+            @click="startGame()"
+          >
+            Start Game
+          </button>
+        </div>
+
+        <div
+          class="grid grid-cols-2 gap-2 sm:gap-4 md:gap-8 rotate-45"
+          :class="{'opacity-50': !running}"
+        >
+          <button
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tl-full"
+            :class="{'bg-yellow-200': isActive('top-left'), 'bg-yellow-400': !isActive('top-left')}"
+            @click="enter('top-left')"
+          ></button>
+          <button
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tr-full"
+            :class="{'bg-blue-200': isActive('top-right'), 'bg-blue-600': !isActive('top-right')}"
+            @click="enter('top-right')"
+          ></button>
+          <button
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-bl-full"
+            :class="{'bg-red-200': isActive('bottom-left'), 'bg-red-500': !isActive('bottom-left')}"
+            @click="enter('bottom-left')"
+          ></button>
+          <button
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-br-full"
+            :class="{'bg-green-200': isActive('bottom-right'), 'bg-green-500': !isActive('bottom-right')}"
+            @click="enter('bottom-right')"
+          ></button>
+        </div>
+      </div>
+      <div class="text-xl font-bold">
+        <div x-show="lost">
+          You lost the game after <span x-text="wonRounds"></span> rounds!
+        </div>
+        <div x-show="!lost">Current round: <span x-text="round"></span></div>
+      </div>
+    </div>
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>

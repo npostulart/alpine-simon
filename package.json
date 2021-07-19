@@ -1,17 +1,27 @@
 {
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "A simple Simon says game done with Alpine.js and TailwindCSS",
+  "homepage": "https://alpine-simon.vercel.app/",
+  "bugs": "https://github.com/npostulart/alpine-simon/issues",
+  "license": "MIT",
+  "author": {
+    "name": "Niklas Postulart",
+    "url": "https://github.com/npostulart"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npostulart/alpine-simon.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
   },
-  "devDependencies": {
-    "vite": "^2.4.2"
-  },
   "dependencies": {
     "alpinejs": "^3.2.2",
     "autoprefixer": "^10.3.1",
     "postcss": "^8.3.5",
-    "tailwindcss": "^2.2.4"
+    "tailwindcss": "^2.2.4",
+    "vite": "^2.4.2"
   }
 }

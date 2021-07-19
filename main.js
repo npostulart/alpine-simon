@@ -17,6 +17,13 @@ function playAudio(audioUrl) {
   })
 }
 
+const keyMap = {
+  'ArrowUp': 'top',
+  'ArrowDown': 'bottom',
+  'ArrowLeft': 'left',
+  'ArrowRight': 'right',
+}
+
 Alpine.data('game', () => ({
   items: {
     'top': {
@@ -41,6 +48,15 @@ Alpine.data('game', () => ({
 
   simonEntries: [],
   userEntries: [],
+
+  init() {
+    document.addEventListener('keydown', (e) => {
+      if (!Object.keys(keyMap).includes(e.key)) return;
+      e.preventDefault();
+      this.enter(keyMap[e.key]);
+      return;
+    });
+  },
 
   async blink(dir) {
     this.items[dir].activeCount += 1;

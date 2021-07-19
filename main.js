@@ -1,47 +1,52 @@
 import Alpine from 'alpinejs';
-import './style.css';
-
 import sound1Url from './audio/simonSound1.mp3';
 import sound2Url from './audio/simonSound2.mp3';
 import sound3Url from './audio/simonSound3.mp3';
 import sound4Url from './audio/simonSound4.mp3';
+import './style.css';
 
 function sleep(milliseconds) {
   return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
 
-function playAudio(audio) {
+function playAudio(audioUrl) {
   return new Promise((res) => {
+    const audio = new Audio(audioUrl);
     audio.play();
     audio.onended = res;
-  });
+  })
 }
 
 Alpine.data('game', () => ({
   items: {
-    'top-left': {
-      active: false,
-      audio: new Audio(sound1Url),
+    'top': {
+      activeCount: 0,
+      audioUrl: sound1Url,
     },
-    'top-right': {
-      active: false,
-      audio: new Audio(sound2Url),
+    'right': {
+      activeCount: 0,
+      audioUrl: sound2Url,
     },
-    'bottom-left': {
-      active: false,
-      audio: new Audio(sound3Url),
+    'left': {
+      activeCount: 0,
+      audioUrl: sound3Url,
     },
-    'bottom-right': {
-      active: false,
-      audio: new Audio(sound4Url),
+    'bottom': {
+      activeCount: 0,
+      audioUrl: sound4Url,
     },
   },
-  running: false,
   blocked: true,
   lost: false,
 
   simonEntries: [],
   userEntries: [],
+
+  async blink(dir) {
+    this.items[dir].activeCount += 1;
+    await playAudio(this.items[dir].audioUrl);
+    this.items[dir].activeCount -= 1;
+  },
 
   async nextRound() {
     this.blocked = true;
@@ -51,80 +56,68 @@ Alpine.data('game', () => ({
     );
 
     for (const dir of this.simonEntries) {
-      this.items[dir].active = true;
-      await playAudio(this.items[dir].audio);
-      this.items[dir].active = false;
-      await sleep(500);
+      await this.blink(dir);
+      await sleep(300);
     }
 
     this.blocked = false;
   },
 
   async enter(dir) {
-    if (this.blocked) return;
-    this.blocked = true;
+    if (this.blocked || this.everyEntered) return;
     this.userEntries.push(dir);
-    this.items[dir].active = true;
-    await playAudio(this.items[dir].audio);
-    this.items[dir].active = false;
+    this.blink(dir);
+
+    if (
+      this.userEntries.some(
+        (value, index) => value !== this.simonEntries[index]
+      )
+    ) {
+      this.setLost();
+      return;
+    }
 
     // every entered
-    if (this.userEntries.length === this.simonEntries.length) {
-      // correct
-      if (
-        this.userEntries.every(
-          (value, index) => value === this.simonEntries[index]
-        )
-      ) {
-        await sleep(1000);
-        await this.nextRound();
-      } else {
-        this.setLost();
-      }
-      // still playing
-    } else {
-      // still correct
-      if (
-        this.userEntries.every(
-          (value, index) => value === this.simonEntries[index]
-        )
-      ) {
-        this.blocked = false;
-        return;
-      } else {
-        this.setLost();
-      }
+    if (this.everyEntered) {
+      await sleep(1500);
+      await this.nextRound();
     }
   },
 
   setLost() {
     this.lost = true;
-    this.running = false;
     this.blocked = true;
   },
 
   isActive(dir) {
-    return this.items[dir].active;
+    return this.items[dir].activeCount > 0;
   },
 
-  round() {
+  get round() {
     return Math.max(this.simonEntries.length, 0);
   },
 
-  wonRounds() {
-    return Math.max(this.round() - 1, 0);
+  get wonRounds() {
+    return Math.max(this.round - 1, 0);
+  },
+
+  get everyEntered() {
+    return this.userEntries.length === this.simonEntries.length;
+  },
+
+  get running() {
+    return this.simonEntries.length !== 0 && !this.lost;
   },
 
   startGame() {
     this.simonEntries = [];
     this.userEntries = [];
     this.lost = false;
-    this.running = true;
     this.blocked = false;
 
     this.nextRound();
   },
 }));
 
-window.Alpine;
+window.Alpine = Alpine;
 Alpine.start();

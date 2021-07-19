@@ -41,24 +41,28 @@
           :class="{'opacity-50': !running}"
         >
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tl-full"
-            :class="{'bg-yellow-200': isActive('top-left'), 'bg-yellow-400': !isActive('top-left')}"
-            @click="enter('top-left')"
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tl-full disabled:cursor-not-allowed"
+            :class="{'bg-yellow-200': isActive('top'), 'bg-yellow-400': !isActive('top')}"
+            :disabled="blocked"
+            @click="enter('top')"
           ></button>
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tr-full"
-            :class="{'bg-blue-200': isActive('top-right'), 'bg-blue-600': !isActive('top-right')}"
-            @click="enter('top-right')"
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tr-full disabled:cursor-not-allowed"
+            :class="{'bg-blue-200': isActive('right'), 'bg-blue-600': !isActive('right')}"
+            :disabled="blocked"
+            @click="enter('right')"
           ></button>
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-bl-full"
-            :class="{'bg-red-200': isActive('bottom-left'), 'bg-red-500': !isActive('bottom-left')}"
-            @click="enter('bottom-left')"
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-bl-full disabled:cursor-not-allowed"
+            :class="{'bg-red-200': isActive('left'), 'bg-red-500': !isActive('left')}"
+            :disabled="blocked"
+            @click="enter('left')"
           ></button>
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-br-full"
-            :class="{'bg-green-200': isActive('bottom-right'), 'bg-green-500': !isActive('bottom-right')}"
-            @click="enter('bottom-right')"
+            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-br-full disabled:cursor-not-allowed"
+            :class="{'bg-green-200': isActive('bottom'), 'bg-green-500': !isActive('bottom')}"
+            :disabled="blocked"
+            @click="enter('bottom')"
           ></button>
         </div>
       </div>

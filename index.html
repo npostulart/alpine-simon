@@ -4,9 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A simple Simon says game made with Alpine.js"
+    />
     <title>Simon says</title>
   </head>
   <body>
+    <h1 class="sr-only">Simon Says</h1>
     <div
       x-data="game"
       class="min-h-screen flex flex-col items-center justify-center gap-10"
@@ -41,29 +46,65 @@
           :class="{'opacity-50': !running}"
         >
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tl-full disabled:cursor-not-allowed"
+            class="
+              w-36
+              h-36
+              sm:w-60 sm:h-60
+              md:w-64 md:h-64
+              rounded-tl-full
+              disabled:cursor-not-allowed
+            "
             :class="{'bg-yellow-200': isActive('top'), 'bg-yellow-400': !isActive('top')}"
             :disabled="blocked"
             @click="enter('top')"
-          ></button>
+          >
+            <span class="sr-only">Top</span>
+          </button>
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-tr-full disabled:cursor-not-allowed"
+            class="
+              w-36
+              h-36
+              sm:w-60 sm:h-60
+              md:w-64 md:h-64
+              rounded-tr-full
+              disabled:cursor-not-allowed
+            "
             :class="{'bg-blue-200': isActive('right'), 'bg-blue-600': !isActive('right')}"
             :disabled="blocked"
             @click="enter('right')"
-          ></button>
+          >
+            <span class="sr-only">Right</span>
+          </button>
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-bl-full disabled:cursor-not-allowed"
+            class="
+              w-36
+              h-36
+              sm:w-60 sm:h-60
+              md:w-64 md:h-64
+              rounded-bl-full
+              disabled:cursor-not-allowed
+            "
             :class="{'bg-red-200': isActive('left'), 'bg-red-500': !isActive('left')}"
             :disabled="blocked"
             @click="enter('left')"
-          ></button>
+          >
+            <span class="sr-only">Left</span>
+          </button>
           <button
-            class="w-36 h-36 sm:w-60 sm:h-60 md:w-64 md:h-64 rounded-br-full disabled:cursor-not-allowed"
+            class="
+              w-36
+              h-36
+              sm:w-60 sm:h-60
+              md:w-64 md:h-64
+              rounded-br-full
+              disabled:cursor-not-allowed
+            "
             :class="{'bg-green-200': isActive('bottom'), 'bg-green-500': !isActive('bottom')}"
             :disabled="blocked"
             @click="enter('bottom')"
-          ></button>
+          >
+            <span class="sr-only">Bottom</span>
+          </button>
         </div>
       </div>
       <div class="text-xl font-bold">
@@ -72,6 +113,27 @@
         </div>
         <div x-show="!lost">Current round: <span x-text="round"></span></div>
       </div>
+
+      <footer class="fixed bottom-4 w-full text-center">
+        <p>
+          Made by
+          <a
+            href="https://github.com/npostulart"
+            class="text-blue-700 hover:underline"
+            >Niklas Postulart</a
+          >
+          with <span class="mr-1">💪</span>,
+          <a
+            href="https://tailwindcss.com/"
+            class="text-blue-700 hover:underline"
+            >tailwindcss</a
+          >
+          and
+          <a href="https://alpinejs.dev/" class="text-blue-700 hover:underline"
+            >Alpine.js</a
+          >
+        </p>
+      </footer>
     </div>
     <script type="module" src="/main.js"></script>
   </body>
